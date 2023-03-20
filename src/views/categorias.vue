@@ -116,6 +116,6 @@ watch(
 
 <template>
     <div class="card">
-        <h1>biblioteca</h1>
+        <h1>categorias</h1>
     </div>
 </template>
