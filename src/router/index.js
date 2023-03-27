@@ -22,13 +22,18 @@ const router = createRouter({
                     path: '/perfil',
                     name: 'perfil',
                     component: () => import('@/views/perfil.vue')
-                },
-                {
-                    path: '/login',
-                    name: 'login',
-                    component: () => import('@/views/pages/auth/Login.vue')
-                },
+                }
             ]
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('@/views/pages/auth/Login.vue')
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import('@/views/pages/auth/register.vue')
         },
         {
             path: '/config',
@@ -53,9 +58,9 @@ const router = createRouter({
                     path: '/libros',
                     name: 'libros',
                     component: () => import('@/views/libros.vue')
-                },
+                }
             ]
-        },
+        }
     ]
 });
 
