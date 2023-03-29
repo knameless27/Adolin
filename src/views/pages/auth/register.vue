@@ -22,10 +22,18 @@ const submitR = () => {
                 email: email.value,
                 password: password.value,
             }
-            axios.register(data).then((res)=>{
-                toast.add({ severity: 'success', summary: 'Success', detail: res.message, life: 3000 });
-                router.push('/')
-            }).catch((e)=> {
+            axios.register(data).then((res) => {
+                switch (res.status) {
+                    case 'error':
+                        toast.add({ severity: res.status, summary: res.status, detail: res.message, life: 3000 });
+                        break;
+                    default:
+                        toast.add({ severity: res.status, summary: res.status, detail: res.message, life: 3000 });
+                        localStorage.setItem('token', res.token)
+                        router.push('/')
+                        break;
+                }
+            }).catch((e) => {
                 toast.add({ severity: 'error', summary: 'Error al registrarse', detail: e.response.data?.message, life: 3000 });
             })
         } else {
@@ -92,4 +100,5 @@ const logoUrl = computed(() => {
 .pi-eye-slash {
     transform: scale(1.6);
     margin-right: 1rem;
-}</style>
+}
+</style>

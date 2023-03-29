@@ -21,10 +21,18 @@ const subm = () => {
         password: password.value
     }
     axios.login(data).then((res) => {
-        localStorage.setItem('user', JSON.stringify(res))
-        router.push('/')
+        switch (res.status) {
+            case 'error':
+                toast.add({ severity: res.status, summary: res.status, detail: res.message, life: 3000 });
+                break;
+            default:
+                toast.add({ severity: res.status, summary: res.status, detail: res.message, life: 3000 });
+                localStorage.setItem('token', res.token)
+                router.push('/')
+                break;
+        }
     }).catch((e) => {
-        toast.add({ severity: 'error', summary: 'Error al registrarse', detail: e.response.data?.message, life: 3000 });
+        toast.add({ severity: res.status, summary: res.status, detail: e.response.data?.message, life: 3000 });
     })
 }
 </script>
