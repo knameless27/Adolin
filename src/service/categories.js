@@ -19,14 +19,14 @@ const getCategories = () => {
     });
 };
 
-const searchBooks = (data) => {
+const searchCategories = (data) => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
         const headers = {
             Auth: `${token}`
         };
         axios
-            .post(`${import.meta.env.VITE_API}/search/books`, data, {
+            .post(`${import.meta.env.VITE_API}/search/categories`, data, {
                 headers: headers
             })
             .then((resp) => {
@@ -37,14 +37,34 @@ const searchBooks = (data) => {
             });
     });
 };
-const makeReservation = (data) => {
+
+const addCategory = (data) => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
         const headers = {
             Auth: `${token}`
         };
         axios
-            .post(`${import.meta.env.VITE_API}/books/save`, data, {
+            .post(`${import.meta.env.VITE_API}/categories`, data, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+const deleteCategory = (id) => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            Auth: `${token}`
+        };
+        axios
+            .delete(`${import.meta.env.VITE_API}/categories/${id}`,{
                 headers: headers
             })
             .then((resp) => {
@@ -58,6 +78,7 @@ const makeReservation = (data) => {
 
 export default {
     getCategories,
-    searchBooks,
-    makeReservation
+    searchCategories,
+    addCategory,
+    deleteCategory
 };
