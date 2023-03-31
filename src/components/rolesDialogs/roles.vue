@@ -3,7 +3,7 @@
         <Dialog header="Advertencia" v-model:visible="deleteModal" :style="{ width: '350px' }" :modal="true" @hide="onHideDelete">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                <span>¿Seguro que desea eliminar esta categoria?</span>
+                <span>¿Seguro que desea eliminar este rol?</span>
             </div>
             <template #footer>
                 <Button label="No" icon="pi pi-times" @click="onHideDelete" class="p-button-text" />

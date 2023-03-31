@@ -6,7 +6,7 @@
             </div>
             <div class="col-3">
                 <InputText v-model="categ" type="text" class="w-full" @input="searchCategories()"
-                    placeholder="Buscar Categorias..." />
+                    placeholder="Buscar libros..." />
             </div>
             <div class="col-1">
                 <Button type="button" icon="pi pi-plus" rounded severity="success" @click="addItem()" />
@@ -16,6 +16,31 @@
             <Column field="name" header="name" expander>
                 <template #body="item">
                     <span>{{ item.data.name }}</span>
+                </template>
+            </Column>
+            <Column field="author" header="author" expander>
+                <template #body="item">
+                    <span>{{ item.data.author }}</span>
+                </template>
+            </Column>
+            <Column field="category" header="category" expander>
+                <template #body="item">
+                    <span>{{ item.data.Category?.name }}</span>
+                </template>
+            </Column>
+            <Column field="pages" header="pages" expander>
+                <template #body="item">
+                    <span>{{ item.data.pages }}</span>
+                </template>
+            </Column>
+            <Column field="stock" header="stock" expander>
+                <template #body="item">
+                    <span>{{ item.data.stock }}</span>
+                </template>
+            </Column>
+            <Column field="publication_date" header="publication date" expander>
+                <template #body="item">
+                    <span>{{ item.data.publication_date }}</span>
                 </template>
             </Column>
             <Column header="state">
@@ -40,9 +65,9 @@
 </template>
 
 <script>
-import axios from '@/service/categories.js';
+import axios from '@/service/books.js';
 import Toast from 'primevue/toast';
-import dialogsCateg from '../components/categoriesDialogs/dialogs.vue';
+import dialogsCateg from '../components/booksDialogs/books.vue';
 
 
 export default {
@@ -83,7 +108,7 @@ export default {
             const data = {
                 name: this.categ
             }
-            axios.searchCategories(data).then(({ data }) => {
+            axios.searchBooks(data).then(({ data }) => {
                 this.categorias = data.map((category) => {
                     category.data = category
                     return category
@@ -92,7 +117,7 @@ export default {
         }
     },
     created() {
-        axios.getCategories().then(({ data }) => {
+        axios.getBooks().then(({ data }) => {
             this.categorias = data.map((category) => {
                 category.data = category
                 return category
