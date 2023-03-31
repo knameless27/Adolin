@@ -57,6 +57,25 @@ const addCategory = (data) => {
     });
 };
 
+const editCategory = (id, data) => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            Auth: `${token}`
+        };
+        axios
+            .put(`${import.meta.env.VITE_API}/categories/${id}`, data, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
 const deleteCategory = (id) => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
@@ -80,5 +99,6 @@ export default {
     getCategories,
     searchCategories,
     addCategory,
-    deleteCategory
+    deleteCategory,
+    editCategory
 };
