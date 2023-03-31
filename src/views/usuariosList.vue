@@ -6,16 +6,26 @@
             </div>
             <div class="col-3">
                 <InputText v-model="categ" type="text" class="w-full" @input="searchCategories()"
-                    placeholder="Buscar Categorias..." />
+                    placeholder="Buscar usuarios por email..." />
             </div>
             <div class="col-1">
                 <Button type="button" icon="pi pi-plus" rounded severity="success" @click="addItem()" />
             </div>
         </div>
         <DataTable :value="categorias">
-            <Column field="name" header="name" expander>
+            <Column field="email" header="email" expander>
+                <template #body="item">
+                    <span>{{ item.data.email }}</span>
+                </template>
+            </Column>
+            <Column field="name" header="name">
                 <template #body="item">
                     <span>{{ item.data.name }}</span>
+                </template>
+            </Column>
+            <Column field="rol" header="rol">
+                <template #body="item">
+                    <span>{{ item.data.Role.name }}</span>
                 </template>
             </Column>
             <Column header="state">
@@ -40,9 +50,9 @@
 </template>
 
 <script>
-import axios from '@/service/categories.js';
+import axios from '@/service/users.js';
 import Toast from 'primevue/toast';
-import dialogsCateg from '../components/categoriesDialogs/dialogs.vue';
+import dialogsCateg from '../components/usersDialogs/usuarios.vue';
 
 
 export default {

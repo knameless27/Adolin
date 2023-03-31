@@ -8,7 +8,7 @@ const model = ref([
         label: 'Inicio',
         items: [
             {
-                label: 'Biblioteca',
+                label: 'Mi Biblioteca',
                 icon: 'pi pi-fw pi-home',
                 to: '/biblioteca'
             }
