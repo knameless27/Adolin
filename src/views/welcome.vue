@@ -73,6 +73,9 @@ export default {
             axios.makeReservation(data).then(({message})=>{
                 this.mensaje = message
                 this.display = true
+            }).catch(({response: {data: {message}}}) => {
+                this.mensaje = message
+                this.display = true
             })
         },
         close(){

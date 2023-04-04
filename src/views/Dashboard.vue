@@ -17,7 +17,7 @@
                     <h3>{{ book.name }} - {{ book.Category.name }}</h3>
                     <h5>pages: {{ book.pages }}</h5>
                     <h5>Publication date: {{ book.publication_date.split(' ')[0] }}</h5>
-                    <Button label="Quitar reserva" class="p-3 text-lg" @click="reservar(book)"></Button>
+                    <Button label="Quitar reserva" class="p-3 text-lg" @click="quitarReserva(book)"></Button>
                     .
                     <Button label="Leer" class="p-3 text-lg" @click="read()"></Button>
                 </div>
@@ -64,16 +64,16 @@ export default {
             }
             clearTimeout(clearTimeOut);
             clearTimeOut = setTimeout(() => {
-                axios.searchBooks(data).then(({ data }) => {
+                axios.searchReservations(data).then(({ data }) => {
                     this.books = data
                 })
             }, 500)
         },
-        reservar(book) {
-            const data = {
-                bookId: book.id
-            }
-            axios.makeReservation(data).then(({message})=>{
+        quitarReserva(book) {
+            axios.removeReservation(book.id).then(({message})=>{
+                this.mensaje = message
+                this.display = true
+            }).catch(({response: {data: {message}}}) => {
                 this.mensaje = message
                 this.display = true
             })

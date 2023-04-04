@@ -18,6 +18,24 @@ const getBooks = () => {
             });
     });
 };
+const removeReservation = (id) => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            'Auth': `${token}`
+        };
+        axios
+            .get(`${import.meta.env.VITE_API}/books/remove_reservation/${id}`, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
 
 const addCategory = (data) => {
     return new Promise((resolve, reject) => {
@@ -93,6 +111,23 @@ const searchBooks = (data) => {
             });
     });
 };
+const searchReservations = (data) => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            'Auth': `${token}`
+        };
+        axios.post(`${import.meta.env.VITE_API}/search/reservations`, data, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
 const makeReservation = (data) => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
@@ -117,5 +152,7 @@ export default {
     makeReservation,
     addCategory,
     editBooks,
-    deleteBooks
+    deleteBooks,
+    removeReservation,
+    searchReservations
 };
