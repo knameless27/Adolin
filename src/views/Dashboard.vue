@@ -19,7 +19,9 @@
                     <h5>Publication date: {{ book.publication_date.split(' ')[0] }}</h5>
                     <Button label="Quitar reserva" class="p-3 text-lg" @click="quitarReserva(book)"></Button>
                     .
-                    <Button label="Leer" class="p-3 text-lg" @click="read()"></Button>
+                    <a href="https://www.proturbiomarspa.com/files/_pdf-prueba.pdf" target="_blank">
+                        <Button label="Leer" class="p-3 text-lg"></Button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -49,15 +51,11 @@ export default {
         }
     },
     mounted() {
-        axios.getBooks().then(({ data }) => {
-            this.books = data
+        axios.getReservations().then(({ data }) => {
+            this.books = data[0].Books
         })
     },
     methods: {
-        read(){
-            let a = document.createElement('a')
-            // a.setAttribute("href", 'https://www.proturbiomarspa.com/files/_pdf-prueba.pdf').onclick()
-        },
         searchBooks() {
             const data = {
                 name: this.searchBook
@@ -72,6 +70,7 @@ export default {
         quitarReserva(book) {
             axios.removeReservation(book.id).then(({message})=>{
                 this.mensaje = message
+                this.searchBooks()
                 this.display = true
             }).catch(({response: {data: {message}}}) => {
                 this.mensaje = message

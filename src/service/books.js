@@ -18,6 +18,25 @@ const getBooks = () => {
             });
     });
 };
+
+const getReservations = () => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            'Auth': `${token}`
+        };
+        axios
+            .get(`${import.meta.env.VITE_API}/reservations`, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
 const removeReservation = (id) => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
@@ -154,5 +173,6 @@ export default {
     editBooks,
     deleteBooks,
     removeReservation,
-    searchReservations
+    searchReservations,
+    getReservations
 };
