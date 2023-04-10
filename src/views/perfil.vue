@@ -1,121 +1,90 @@
-<script setup>
-import { onMounted, reactive, ref, watch } from 'vue';
-import ProductService from '@/service/ProductService';
-import { useLayout } from '@/layout/composables/layout';
-
-const { isDarkTheme, contextPath } = useLayout();
-
-const products = ref(null);
-const lineData = reactive({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: '#2f4860',
-            borderColor: '#2f4860',
-            tension: 0.4
-        },
-        {
-            label: 'Second Dataset',
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: '#00bb7e',
-            borderColor: '#00bb7e',
-            tension: 0.4
-        }
-    ]
-});
-const items = ref([
-    { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-    { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-]);
-const lineOptions = ref(null);
-const productService = new ProductService();
-
-onMounted(() => {
-    productService.getProductsSmall().then((data) => (products.value = data));
-});
-
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-};
-const applyLightTheme = () => {
-    lineOptions.value = {
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#495057'
-                }
-            }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: '#495057'
-                },
-                grid: {
-                    color: '#ebedef'
-                }
-            },
-            y: {
-                ticks: {
-                    color: '#495057'
-                },
-                grid: {
-                    color: '#ebedef'
-                }
-            }
-        }
-    };
-};
-
-const applyDarkTheme = () => {
-    lineOptions.value = {
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#ebedef'
-                }
-            }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: '#ebedef'
-                },
-                grid: {
-                    color: 'rgba(160, 167, 181, .3)'
-                }
-            },
-            y: {
-                ticks: {
-                    color: '#ebedef'
-                },
-                grid: {
-                    color: 'rgba(160, 167, 181, .3)'
-                }
-            }
-        }
-    };
-};
-
-watch(
-    isDarkTheme,
-    (val) => {
-        if (val) {
-            applyDarkTheme();
-        } else {
-            applyLightTheme();
-        }
-    },
-    { immediate: true }
-);
-</script>
-
 <template>
     <div class="card">
-        <h1>mi perfil</h1>
+        <h1>Mi perfil</h1>
+        <hr />
+        <div class="box">
+            <div class="Card">
+                <h1>{{ user.name }} - {{ user.Role?.name }}</h1>
+                <h4>{{ user.email }}</h4>
+                <h4>Estas con nosotros desde: {{ new Date(user.createdAt).toLocaleString().split(', ')[0] }}</h4>
+            </div>
+            <div>
+                <h1>Las categorias que mas te gusta leer:</h1>
+                <Chart type="pie" :data="chartData" :options="chartOptions" style="width: 25em" />
+            </div>
+        </div>
     </div>
 </template>
+
+<script>
+import axios from '@/service/users.js';
+
+export default {
+    data() {
+        return {
+            chartData: null,
+            chartOptions: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true
+                        }
+                    }
+                }
+            },
+            user: {}
+        }
+    },
+    mounted() {
+        axios.myProfile().then((res) => {
+            let labels = [];
+            res.data.Books.map((book) => {
+                let lab = labels.find((label) => label == book.Category.name)
+                if (!lab) {
+                    labels.push(book.Category.name)
+                }
+            })
+            let numData = labels.map(label => res.data.Books.filter((book) => book.Category.name == label).length)
+            this.chartData = this.setChartData(labels, numData);
+            this.user = res.data
+        })
+
+    },
+    methods: {
+        setChartData(labels, data) {
+            const documentStyle = getComputedStyle(document.body);
+
+            return {
+                labels: labels,
+                datasets: [
+                    {
+                        data: data,
+                        backgroundColor: [
+                            documentStyle.getPropertyValue('--blue-500'),
+                            documentStyle.getPropertyValue('--yellow-500'),
+                            documentStyle.getPropertyValue('--green-500')
+                        ],
+                        hoverBackgroundColor: [
+                            documentStyle.getPropertyValue('--blue-400'),
+                            documentStyle.getPropertyValue('--yellow-400'),
+                            documentStyle.getPropertyValue('--green-400')
+                        ]
+                    }
+                ]
+            };
+        }
+    }
+}
+</script>
+
+<style>
+.box {
+    display: grid;
+    grid-template-rows: repeat(2);
+    grid-template-columns: repeat(2, 50%);
+}
+
+.Card {
+    padding-left: 10%;
+}
+</style>

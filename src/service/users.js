@@ -1,5 +1,24 @@
 import axios from 'axios';
 
+const myProfile = () => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            Auth: `${token}`
+        };
+        axios
+            .get(`${import.meta.env.VITE_API}/my_profile`, {
+                headers: headers
+            })
+            .then((resp) => {
+                resolve(resp.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
 const getCategories = () => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
@@ -100,5 +119,6 @@ export default {
     searchCategories,
     addCategory,
     deleteCategory,
-    editCategory
+    editCategory,
+    myProfile
 };
