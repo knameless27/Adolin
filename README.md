@@ -1,6 +1,6 @@
-# sakai-vue
+# ADOLIN
 
-This template should help get you started developing with Vue 3 in Vite.
+Este es un proyecto hecho con la plantilla de Sakai-vue, los pasos a seguir para la instalacion del proyecto son los siguientes:
 
 ## Recommended IDE Setup
 
